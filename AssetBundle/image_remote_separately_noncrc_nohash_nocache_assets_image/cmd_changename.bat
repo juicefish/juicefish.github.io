@@ -1,0 +1,7 @@
+@echo off
+rename largeimage_remote_1.bundle largeimage_remote_X1.bundle
+rename largeimage_remote_2.bundle largeimage_remote_X2.bundle
+rename largeimage_remote_5.bundle largeimage_remote_1.bundle
+rename largeimage_remote_6.bundle largeimage_remote_2.bundle
+rename largeimage_remote_X1.bundle largeimage_remote_5.bundle
+rename largeimage_remote_X2.bundle largeimage_remote_6.bundle
