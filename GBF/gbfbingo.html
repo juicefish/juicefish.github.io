@@ -1,0 +1,128 @@
+﻿<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <META NAME="juicefish">
+  <meta charset="utf-8" />
+  <title>簡易賓果顯示器()</title>
+    <style>
+/* 表示するアイコンの縦横サイズ */
+/* PC */
+@media screen and (min-width:796px) {    
+.checker-group > li label,    
+.checker-group > li label img{        width:162px!important;        height:94px!important;        margin: 0;    }}
+//.checker-group > li label img{        width:90px!important;        height:52px!important;        margin: 0;    }}
+
+/* SP */
+@media screen and (max-width:796px) {    
+.checker-group > li label,    
+.checker-group > li label img{        width:162px!important;        height:94px!important;        margin: 0;    }}
+
+//.checker-group{    display:inline;    width:auto;    list-style-type:none;    letter-spacing:-0.4em;}
+.checker-group{     text-align: center;}
+.checker-group > li{    display:inline-block;    list-style-type:none;    width:auto;    height:auto;    letter-spacing:1px;    margin:0;    vertical-align:top;    padding: 4px;    border:solid 1px #e0e0e0;    box-sizing:content-box;    margin:-1px -1px 0 0;}
+.checker-group > li label{    display:block;    position:relative;    background-color:rgba(0,0,0,0.8);    border-radius: 4px;}
+.gbf-table_center{  display:block;  text-align:center;}
+.checker-group > li label img{    box-sizing:border-box;    position:relative;}
+/* [チェック項目]背景 */
+/* [チェック項目] 未チェックは暗く */
+.checker-group > li input[type=checkbox][data-count="0"] + label img{    opacity: 0.5;}
+.checker-group > li label img{    vertical-align:bottom;    border-radius:4px;}
+.checker-group > li input[type=checkbox]{ display:none; }
+.checker-group > li label:hover{ cursor:pointer; }
+</style>
+
+  <!-- JavaScript -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js" type="text/javascript"></script>
+  <script>
+    function ChangeDataCount(obj){
+      if(obj.getAttribute("data-count") == "0")
+        obj.setAttribute("data-count", "1");
+      else
+        obj.setAttribute("data-count", "0");
+    }
+
+        var container;
+        var basicObj;
+
+    function ReadUrl(){
+        // 每橫排要顯示幾個
+        var cols = parseInt($("#col_num")[0].value);
+
+        // 腳色圖的網址
+        var imageUrls = [];
+        var imgUrlInput = $("input[id=inputurl]");
+        imgUrlInput.each(function(){
+            imageUrls.push(this.value);
+        });
+
+        // 移除既有NODE
+        while (container.firstChild) {
+            container.removeChild(container.firstChild);
+        }
+
+        // 創造圖片按鈕
+        var row = "a";
+        var col = 0;
+        imageUrls.forEach(function(element) {
+            var newObj = basicObj.cloneNode(true);
+            newObj.children[0].setAttribute("id", row + col);
+            newObj.children[1].setAttribute("for", row + col);
+            newObj.children[1].children[0].setAttribute("src", element);
+            container.appendChild(newObj);
+            col++;
+            if(col % cols == 0){
+                container.appendChild(document.createElement("br"));
+            }
+        });
+    }
+
+    function AddUrl(){
+        var container = $("#inputline")[0];
+        //container.parentNode.appendChild(document.createElement("br"));
+        container.parentNode.appendChild(container.cloneNode(true));
+    }
+
+    function RemoveUrl(){
+        var urlcontainer = $("#container_url")[0];
+        if(urlcontainer.childNodes.length > 2)
+            urlcontainer.removeChild(urlcontainer.lastChild);
+    }
+
+    function ClearUrl(obj){
+        obj.parentNode.children[0].value="";
+    }
+
+    // 起始隱藏
+    $(document).ready(function(){
+        container = $("#container")[0];
+        basicObj = $("#basicObj")[0].parentNode;
+        basicObj.remove();
+    });
+  </script>
+</head>
+<body>
+<ol id="container" class="checker-group">
+<li>
+<input type="checkbox" id="basicObj" data-count="0" oninput="ChangeDataCount(this);">
+<label for="basicObj"><img src="https://gamewith.akamaized.net/article_tools/granbluefantasy/gacha/3017.jpg"></label>
+</input>
+</li>
+</ol>
+<br/><br/>
+<ol id="container_panel">
+<button onclick="ReadUrl();">讀取圖片</button><br/>
+<label>橫排數量：<input id="col_num" value="3"/></label><br/><br/>
+
+<button onclick="AddUrl();">增加網址</button>
+<button onclick="RemoveUrl();">減少網址</button><br/>
+</ol>
+<ol id="container_url">
+<label id="inputline">圖片網址：<input id="inputurl"/><button onclick="ClearUrl(this);">清除</button><br/></label>
+</ol>
+<br/>
+<ol>
+建議使用下列網站，複製所需的圖片網址<br/>
+<a href="https://xn--bck3aza1a2if6kra4ee0hf.gamewith.jp/article/show/54257" target="_blank">GBF wiki( Gamewith)</a>
+</ol>
+</body>
+</html>
